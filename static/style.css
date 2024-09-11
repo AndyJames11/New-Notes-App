@@ -1,0 +1,142 @@
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #f7f7f7;
+    display: flex;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+#sidebar {
+    background-color: #f7f7f7;
+    width: 250px;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: left;
+    border-right: 1px solid #ccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: black;
+}
+
+#notebook-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.notebook-item {
+    height: 75px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #e2e2e2;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: black;
+}
+
+.notebook-item:hover {
+    background-color: #fdf250;
+    transition: 0.3s;
+}
+
+#addNotebookSidebar {
+    background-color: #d9d9d9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.new-note-sidebar {
+    font-size: 1.2rem;
+    margin-right: 10px;
+    transform: translateY(0px);
+    transform: translateX(50px);
+}
+
+#addNotebookSidebar:hover {
+    background-color: #fdf250;
+    transition: 0.25s;
+}
+
+#container {
+    margin-left: 275px;
+    background-color: white;
+    position: fixed;
+    border-radius: 8px;
+    width: calc(100% - 250px);
+    height: 100vh;
+    padding-left: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#notes-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.note-item {
+    background-color: #fff385;
+    width: 200px;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#addNoteDiv {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    height: 200px;
+    width: 200px;
+    margin: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#addNoteDiv:hover {
+    transition: 0.25s;
+    background-color: #eeeeee;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 100px;
+}
+
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    border-radius: 10px;
+    text-align: center;
+}

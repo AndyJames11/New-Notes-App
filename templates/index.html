@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andrew's Notes App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- Sidebar for notebooks -->
+    <div id="sidebar">
+        <h2>Notebooks</h2>
+        <ul id="notebook-list">
+            {% for notebook in notebooks %}
+            <li>
+                {{ notebook.name }}
+                <form action="{{ url_for('delete_notebook', id=notebook.id) }}" method="POST" style="display:inline;">
+                    <button type="submit"><i class="fas fa-trash"></i></button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        <div id="addNotebookSidebar" onclick="document.getElementById('notebookModal').style.display='block'">
+            <p class="new-note-sidebar">New Notebook</p>
+            <i class="fa-solid fa-plus"></i>
+        </div>
+    </div>
+
+    <!-- Notes Container -->
+    <div id="container">
+        <div id="list-header">
+            <div id="addNoteDiv" onclick="document.getElementById('noteModal').style.display='block'">
+                <p>New Note</p>
+                <i class="fa-solid fa-plus"></i>
+            </div>
+        </div>
+        
+        <div id="list-container">
+            <ul id="notes-list">
+                <!-- Notes for the first notebook will be dynamically added here -->
+                {% if notebooks %}
+                    {% for note in notebooks[0].notes %}
+                    <li>
+                        {{ note.content }}
+                        <form action="{{ url_for('delete_note_from_notebook', id=note.id) }}" method="POST" style="display:inline;">
+                            <button type="submit"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="notebookModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('notebookModal').style.display='none'">&times;</span>
+            <h2>Add New Notebook</h2>
+            <form action="{{ url_for('add_notebook') }}" method="POST">
+                <input type="text" name="name" placeholder="Enter notebook name">
+                <button type="submit">Add Notebook</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="noteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('noteModal').style.display='none'">&times;</span>
+            <h2>Add New Note</h2>
+            <form action="{{ url_for('add_note_to_notebook', notebook_id=notebooks[0].id) }}" method="POST">
+                <textarea name="content" placeholder="Enter text here"></textarea>
+                <button type="submit">Add Note</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
