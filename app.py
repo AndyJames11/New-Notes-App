@@ -4,9 +4,15 @@ import os
 
 app = Flask(__name__)
 
+# Get the DATABASE_URL environment variable and adjust for SQLAlchemy's requirements
+uri = os.getenv("DATABASE_URL")  # Heroku sets this environment variable automatically
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)  # Correct the URI for SQLAlchemy
+
 # Heroku PostgreSQL database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://localhost/yourdbname')
+app.config['SQLALCHEMY_DATABASE_URI'] = uri or 'postgresql://localhost/yourdbname'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 # Define models
