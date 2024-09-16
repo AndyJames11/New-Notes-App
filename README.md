@@ -36,6 +36,9 @@
 2. Ability to add a title to each note
 3. Ability to edit the name of the notebook
 4. Potential light/dark mode switch
+5. Improvements to login page e.g. confirmation message for account creation etc.
+6. New page with general info on the app and the development. Add this as a link in the Navbar
+7. Account info section - ability to change password/email/delete account
 
 ## Testing
 
