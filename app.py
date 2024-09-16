@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate  # Import Flask-Migrate
 import os
 
 app = Flask(__name__)
 
 # Secret key for session management
-app.secret_key = 'your_secret_key'
+app.secret_key = os.getenv('SECRET_KEY', 'default_secret_key_for_dev')
 
 # Get the DATABASE_URL environment variable and adjust for SQLAlchemy's requirements
 uri = os.getenv("DATABASE_URL")  # Heroku sets this environment variable automatically
@@ -17,6 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:tzQVx33j@localhos
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)  # Set up Flask-Migrate
 
 # Define models
 class User(db.Model):
@@ -24,25 +26,28 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    notebooks = db.relationship('Notebook', backref='user', lazy=True)
 
 class Notebook(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     notes = db.relationship('Note', backref='notebook', lazy=True, cascade="all, delete-orphan")
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
     notebook_id = db.Column(db.Integer, db.ForeignKey('notebook.id'), nullable=False)
-
+    
 # Routes
 @app.route('/')
 def index():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
-    notebooks = Notebook.query.all()
-    return render_template('index.html', notebooks=notebooks or [])
+    user_id = session['user_id']
+    notebooks = Notebook.query.filter_by(user_id=user_id).all()
+    return render_template('index.html', notebooks=notebooks)
 
 # Login route
 @app.route('/login', methods=['GET', 'POST'])
@@ -91,7 +96,7 @@ def add_notebook():
 
     name = request.form['name']
     if name:
-        notebook = Notebook(name=name)
+        notebook = Notebook(name=name, user_id=session['user_id'])
         db.session.add(notebook)
         db.session.commit()
     return redirect(url_for('view_notebook', notebook_id=notebook.id))  # Redirect to the newly created notebook
@@ -103,12 +108,13 @@ def delete_notebook(id):
         return redirect(url_for('login'))
 
     notebook = Notebook.query.get_or_404(id)
+    if notebook.user_id != session['user_id']:
+        flash("You don't have permission to delete this notebook")
+        return redirect(url_for('index'))
+    
     db.session.delete(notebook)
     db.session.commit()
-    
-    # If a notebook is deleted, redirect to the main page since the notebook no longer exists
     return redirect(url_for('index'))
-
 
 @app.route('/add_note/<int:notebook_id>', methods=['POST'])
 def add_note_to_notebook(notebook_id):
@@ -117,6 +123,10 @@ def add_note_to_notebook(notebook_id):
 
     content = request.form['content']
     notebook = Notebook.query.get_or_404(notebook_id)
+    if notebook.user_id != session['user_id']:
+        flash("You don't have permission to add a note to this notebook")
+        return redirect(url_for('index'))
+
     if content:
         note = Note(content=content, notebook=notebook)
         db.session.add(note)
@@ -131,13 +141,16 @@ def delete_note_from_notebook(id):
         return redirect(url_for('login'))
 
     note = Note.query.get_or_404(id)
-    notebook_id = note.notebook_id  # Save the notebook ID before deleting the note
+    notebook_id = note.notebook_id
+    if note.notebook.user_id != session['user_id']:
+        flash("You don't have permission to delete this note")
+        return redirect(url_for('index'))
+
     db.session.delete(note)
     db.session.commit()
 
     # After deleting the note, redirect back to the notebook page
     return redirect(url_for('view_notebook', notebook_id=notebook_id))
-
 
 @app.route('/edit_note/<int:id>', methods=['POST'])
 def edit_note(id):
@@ -145,6 +158,10 @@ def edit_note(id):
         return redirect(url_for('login'))
 
     note = Note.query.get_or_404(id)
+    if note.notebook.user_id != session['user_id']:
+        flash("You don't have permission to edit this note")
+        return redirect(url_for('index'))
+
     new_content = request.form['content']
     if new_content:
         note.content = new_content
@@ -159,8 +176,12 @@ def view_notebook(notebook_id):
         return redirect(url_for('login'))
 
     notebook = Notebook.query.get_or_404(notebook_id)
-    notebooks = Notebook.query.all()  # Get all notebooks for the sidebar
-    notes = notebook.notes  # Get the notes for the selected notebook
+    if notebook.user_id != session['user_id']:
+        flash("You don't have permission to view this notebook")
+        return redirect(url_for('index'))
+
+    notes = notebook.notes # Get all the notes from the notebook
+    notebooks = Notebook.query.filter_by(user_id=session['user_id']).all() # Show all notebooks
     return render_template('index.html', notebooks=notebooks, selected_notebook=notebook, notes=notes)
 
 if __name__ == '__main__':
