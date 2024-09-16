@@ -1,3 +1,6 @@
+/* Imports Lato and Oswald fonts which are used throughout */
+@import url('https://fonts.googleapis.com/css?family=Oswald|Lato:300');
+
 body {
     font-family: 'Lato', sans-serif;
     background-color: #f7f7f7;
@@ -8,6 +11,7 @@ body {
     min-height: 100vh;
 }
 
+/* Sidebar Updates */
 #sidebar {
     background-color: #f7f7f7;
     width: 250px;
@@ -33,6 +37,10 @@ body {
     margin: 0 0 20px 0;
 }
 
+.notebook-name {
+    font-size: 15px;
+}
+
 .notebook-item {
     height: 75px;
     padding: 10px;
@@ -42,6 +50,7 @@ body {
     cursor: pointer;
     font-size: 1.2rem;
     color: black;
+    text-decoration: none;
 }
 
 .notebook-item:hover {
@@ -66,37 +75,89 @@ body {
     transform: translateX(50px);
 }
 
+#addNotebookSidebar i {
+    font-size: 1.2rem;
+    color: black;
+}
+
 #addNotebookSidebar:hover {
     background-color: #fdf250;
     transition: 0.25s;
 }
 
+.selected-notebook {
+    background-color: #fff385;
+    font-weight: bold;
+    border-left: 4px solid #ffc73a;
+}
+
+/* Container for the notes */
 #container {
     margin-left: 275px;
     background-color: white;
     position: fixed;
     border-radius: 8px;
+    box-shadow: 0px 10px 15px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
     width: calc(100% - 250px);
     height: 100vh;
     padding-left: 20px;
     box-sizing: border-box;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
     overflow-y: auto;
 }
 
+/* Ensure that the list of notes is properly aligned */
 #notes-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 10px;
+    flex-wrap: wrap; /* Ensure notes flow properly if more than one */
+    justify-content: flex-start; /* Align the notes to the left */
+    gap: 10px; /* Space between notes */
 }
 
+/* Ensure each note item takes up the appropriate space */
 .note-item {
     background-color: #fff385;
     width: 200px;
     margin: 10px;
     padding: 20px;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Notes Styling */
+#list-header {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+}
+
+/* Occupies space to the right of the + button so all notes appear below */
+.blank div {
+    background-color: white;
+    border: none;
+    padding: 20px;
+    border-radius: 8px;
+    height: 200px;
+    width: 200px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+p {
+    position: absolute;
+    transform: translateY(-75px);
+    font-size: 25px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.5);
 }
 
 #addNoteDiv {
@@ -118,6 +179,160 @@ body {
     background-color: #eeeeee;
 }
 
+#addNoteDiv i {
+    font-size: 70px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+#list-container {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+li {
+    background-color: #fff385;
+    margin: 5px 0;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 200px;
+    width: 200px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 9px 9px 18px #b3b3b3, -9px -9px 18px #ffffff;
+}
+
+li span {
+    font-size: 12px;
+    flex-grow: 1;
+    word-wrap: break-word;
+    overflow-y: auto;
+}
+
+/* Ensure the buttons are placed side by side */
+.button-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.editBtn, .deleteBtn {
+    background-color: transparent;  /* Remove button background for icon-only buttons */
+    border: none;                   /* Remove button borders */
+    cursor: pointer;
+    padding: 7px;
+    width: 40px;
+    font-size: 16px;                /* Adjust icon size */
+    color: black;
+    border-radius: 8px;
+}
+
+.editBtn {
+    background-color: gainsboro;
+}
+
+.deleteBtn {
+    background-color: rgb(255, 120, 120)
+}
+
+.deleteBtn:hover {
+    background-color: rgb(255, 90, 80, 90)
+}
+
+.editBtn:hover {
+    background-color: rgb(200, 200, 200);
+}
+
+.deleteNotebookBtn {
+    background-color: rgb(255, 120, 120);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.deleteNotebookBtn:hover {
+    background-color: red;
+}
+
+
+#popupContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 300px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+textarea {
+    width: 300px;
+    height: 200px;
+    margin: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 2px solid rgb(75, 190, 250);
+}
+
+#btn-container {
+    display: flex;
+}
+
+#submitBtn, #closeBtn {
+    width: 100px;
+    background-color: rgb(75, 190, 250);
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+#closeBtn {
+    background-color: rgb(255, 120, 120);
+}
+
+#submitBtn:hover {
+    background-color: rgb(35, 130, 255);
+    transition: 0.35s;
+}
+
+#closeBtn:hover {
+    background-color: red;
+    transition: 0.35s;
+}
+
+/* Add Modal Styles Here */
 .modal {
     display: none;
     position: fixed;
@@ -140,3 +355,25 @@ body {
     border-radius: 10px;
     text-align: center;
 }
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.modal-content input {
+    width: 80%;
+    padding: 10px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modal-content textarea {
+    width: 80%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+

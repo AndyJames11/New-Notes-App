@@ -1,0 +1,205 @@
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #f7f7f7;
+    display: flex;
+    margin: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 100vh;
+}
+
+#sidebar {
+    background-color: #f7f7f7;
+    width: 250px;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: left;
+    border-right: 1px solid #ccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: black;
+}
+
+#notebook-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.notebook-item {
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #fdf250;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.notebook-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.selected-notebook {
+    background-color: #fff385;
+}
+
+.notebook-item button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.notebook-item button i {
+    color: #ff3b30;
+}
+
+.notebook-item button:hover i {
+    color: red;
+}
+
+#addNotebookSidebar {
+    background-color: #d9d9d9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.new-note-sidebar {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+#addNotebookSidebar:hover {
+    background-color: #fdf250;
+    transition: 0.25s;
+}
+
+#container {
+    margin-left: 275px;
+    background-color: white;
+    border-radius: 8px;
+    width: calc(100% - 250px);
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#list-header {
+    margin-bottom: 20px;
+}
+
+#addNoteDiv {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 40px;
+    border-radius: 8px;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#addNoteDiv:hover {
+    transition: 0.25s;
+    background-color: #eeeeee;
+}
+
+#notes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.note-item {
+    background-color: #fff385;
+    width: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.note-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.note-item .button-container {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.note-item button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.note-item button i {
+    color: #ff3b30;
+    font-size: 1rem;
+}
+
+.note-item button:hover i {
+    color: red;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 100px;
+}
+
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    border-radius: 10px;
+    text-align: center;
+}

@@ -13,14 +13,19 @@
     <div id="sidebar">
         <h2>Notebooks</h2>
         <ul id="notebook-list">
-            {% for notebook in notebooks %}
-            <li>
-                {{ notebook.name }}
-                <form action="{{ url_for('delete_notebook', id=notebook.id) }}" method="POST" style="display:inline;">
-                    <button type="submit"><i class="fas fa-trash"></i></button>
-                </form>
-            </li>
-            {% endfor %}
+            {% if notebooks %}
+                {% for notebook in notebooks %}
+                <li class="notebook-item {% if selected_notebook and selected_notebook.id == notebook.id %}selected-notebook{% endif %}" 
+                    onclick="window.location.href='{{ url_for('view_notebook', notebook_id=notebook.id) }}'">
+                    <span class="notebook-name">{{ notebook.name }}</span>
+                    <form action="{{ url_for('delete_notebook', id=notebook.id) }}" method="POST" style="display:inline;">
+                        <button type="submit"><i class="fas fa-trash"></i></button>
+                    </form>
+                </li>
+                {% endfor %}
+            {% else %}
+                <li>No notebooks available. Please create a new notebook.</li>
+            {% endif %}
         </ul>
         <div id="addNotebookSidebar" onclick="document.getElementById('notebookModal').style.display='block'">
             <p class="new-note-sidebar">New Notebook</p>
@@ -28,27 +33,34 @@
         </div>
     </div>
 
+
     <!-- Notes Container -->
     <div id="container">
         <div id="list-header">
+            {% if selected_notebook %}
             <div id="addNoteDiv" onclick="document.getElementById('noteModal').style.display='block'">
-                <p>New Note</p>
+                <p>Add Note</p>
                 <i class="fa-solid fa-plus"></i>
             </div>
+            {% endif %}
         </div>
         
         <div id="list-container">
             <ul id="notes-list">
-                <!-- Notes for the first notebook will be dynamically added here -->
-                {% if notebooks %}
-                    {% for note in notebooks[0].notes %}
-                    <li>
+                {% if notes and notes|length > 0 %}
+                    {% for note in notes %}
+                    <li class="note-item">
                         {{ note.content }}
-                        <form action="{{ url_for('delete_note_from_notebook', id=note.id) }}" method="POST" style="display:inline;">
-                            <button type="submit"><i class="fas fa-trash"></i></button>
-                        </form>
+                        <div class="button-container">
+                            <form action="{{ url_for('delete_note_from_notebook', id=note.id) }}" method="POST" style="display:inline;">
+                                <button type="submit"><i class="fas fa-trash"></i></button>
+                            </form>
+                            <button onclick="openEditModal({{ note.id }}, '{{ note.content }}')"><i class="fas fa-pen"></i></button>
+                        </div>
                     </li>
                     {% endfor %}
+                {% else %}
+                    <li>No notes available in this notebook.</li>
                 {% endif %}
             </ul>
         </div>
@@ -66,16 +78,49 @@
         </div>
     </div>
 
-    <div id="noteModal" class="modal">
+    <!-- Note Edit Modal -->
+    <div id="editNoteModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="document.getElementById('noteModal').style.display='none'">&times;</span>
-            <h2>Add New Note</h2>
-            <form action="{{ url_for('add_note_to_notebook', notebook_id=notebooks[0].id) }}" method="POST">
-                <textarea name="content" placeholder="Enter text here"></textarea>
-                <button type="submit">Add Note</button>
+            <span class="close" onclick="document.getElementById('editNoteModal').style.display='none'">&times;</span>
+            <h2>Edit Note</h2>
+            <form id="editNoteForm" method="POST">
+                <textarea id="editNoteContent" name="content" placeholder="Edit note here"></textarea> <!-- Make sure this ID matches -->
+                <button type="submit">Save Changes</button>
             </form>
         </div>
     </div>
 
+    <div id="noteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('noteModal').style.display='none'">&times;</span>
+            <h2>Add New Note</h2>
+            {% if selected_notebook %}
+            <form action="{{ url_for('add_note_to_notebook', notebook_id=selected_notebook.id) }}" method="POST">
+                <textarea name="content" placeholder="Enter text here"></textarea>
+                <button type="submit">Add Note</button>
+            </form>
+            {% else %}
+            <p>No notebooks available to add a note.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- JavaScript for handling the modal -->
+    <script>
+        function openEditModal(noteId, content) {
+            var editNoteContent = document.getElementById('editNoteContent');
+
+            if (editNoteContent) {
+                // Populate the modal with the note's current content
+                editNoteContent.value = content;
+                // Set the action of the form to point to the correct note edit route
+                document.getElementById('editNoteForm').action = "/edit_note/" + noteId;
+                // Display the edit modal
+                document.getElementById('editNoteModal').style.display = "block";
+            } else {
+                console.error('editNoteContent not found');
+            }
+        }
+    </script>
 </body>
 </html>
