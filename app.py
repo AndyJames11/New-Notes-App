@@ -13,8 +13,8 @@ uri = os.getenv("DATABASE_URL")  # Heroku sets this environment variable automat
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)  # Correct the URI for SQLAlchemy
 
-# Heroku PostgreSQL database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/andys-notes-app'
+# Use the Heroku DATABASE_URL instead of hardcoding
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
