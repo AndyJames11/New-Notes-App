@@ -61,7 +61,7 @@ body {
 }
 
 #navbar ul li a:hover {
-    color: #6ca0dc; /* Medium-light blue */
+    color: #6ca0dc;
     text-decoration: underline;
 }
 
@@ -167,12 +167,12 @@ body {
     overflow-y: auto;
 }
 
-/* Ensure that the list of notes is properly aligned */
+/* Ensures that the list of notes is properly aligned */
 #notes-list {
     display: flex;
-    flex-wrap: wrap; /* Ensure notes flow properly if more than one */
-    justify-content: flex-start; /* Align the notes to the left */
-    gap: 10px; /* Space between notes */
+    flex-wrap: wrap; /* Ensures notes flow properly if there is more than one */
+    justify-content: flex-start; /* Aligns the notes to the left */
+    gap: 10px; /* Space between each sticky note */
 }
 
 #notes-list li {
@@ -205,20 +205,7 @@ body {
     justify-content: left;
 }
 
-/* Occupies space to the right of the + button so all notes appear below */
-.blank div {
-    background-color: white;
-    border: none;
-    padding: 20px;
-    border-radius: 8px;
-    height: 200px;
-    width: 200px;
-    margin: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
+/* Ensures titles of notes and notbooks appear correctly */
 p {
     position: absolute;
     transform: translateY(-75px);
@@ -230,7 +217,7 @@ p {
 #addNoteDiv {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     height: 200px;
     width: 200px;
@@ -285,7 +272,7 @@ li {
 li span {
     font-size: 12px;
     flex-grow: 1;
-    word-wrap: break-word;
+    word-wrap: break-word; /* Ensures notes text stays within notes container */
     overflow-y: auto;
 }
 
@@ -298,12 +285,12 @@ li span {
 }
 
 .editBtn, .deleteBtn {
-    background-color: transparent;  /* Remove button background for icon-only buttons */
-    border: none;                   /* Remove button borders */
+    background-color: transparent;  /* Removes button background for icon-only buttons */
+    border: none;
     cursor: pointer;
     padding: 7px;
     width: 40px;
-    font-size: 16px;                /* Adjust icon size */
+    font-size: 16px;
     color: black;
     border-radius: 8px;
 }
@@ -338,7 +325,6 @@ li span {
 .deleteNotebookBtn:hover {
     background-color: red;
 }
-
 
 #popupContainer {
     position: absolute;
@@ -399,7 +385,7 @@ textarea {
     transition: 0.35s;
 }
 
-/* Add Modal Styles Here */
+/* Modal Styling */
 .modal {
     display: none;
     position: fixed;
@@ -444,8 +430,6 @@ textarea {
     margin: 20px 0;
 }
 
-
-
 /* SIGN-IN PAGE */
 /* Login Page Styling */
 #login-container {
@@ -463,11 +447,13 @@ textarea {
 #login-container h1 {
     font-size: 24px;
     margin-bottom: 20px;
+    transform: translateY(-15px);
 }
 
 #login-container p {
     margin-bottom: 20px;
     font-size: 14px;
+    transform: translateY(-45px);
 }
 
 .input-group {
@@ -514,8 +500,6 @@ textarea {
 .create-account-btn:hover {
     text-decoration: underline;
 }
-
-
 
 /* CREATE ACCOUNT PAGE */
 /* Account Creation Page Styling */
