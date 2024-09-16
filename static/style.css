@@ -11,11 +11,66 @@ body {
     min-height: 100vh;
 }
 
-/* Sidebar Updates */
+/* Navbar */
+#navbar {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 20px;
+    background-color: #f7f7f7;
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* border-bottom: 1px solid black; */
+    box-shadow: 0px 10px 15px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#navbar h1 {
+    position: fixed;
+    display: inline;
+    float: left;
+    left: 1%;
+}
+
+#navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navbar ul li {
+    display: inline-block;
+    margin-right: 20px;
+    background-color: transparent;
+    height: auto;
+    width: auto;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+#navbar ul li a {
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    color: black;
+    text-decoration: none;
+    line-height: 50px; /* Ensures the text vertically aligns within the navbar */
+}
+
+#navbar ul li a:hover {
+    color: #6ca0dc; /* Medium-light blue */
+    text-decoration: underline;
+}
+
+/* Sidebar */
 #sidebar {
     background-color: #f7f7f7;
     width: 250px;
-    height: 100vh;
+    margin-top: 55px;
+    height: calc(100vh - 55px);
     padding: 20px;
     box-sizing: border-box;
     text-align: left;
@@ -23,6 +78,8 @@ body {
     position: fixed;
     top: 0;
     left: 0;
+    border-radius: 8px;
+    box-shadow: 0px 10px 15px 10px rgba(0, 0, 0, 0.3);
 }
 
 #sidebar h2 {
@@ -94,13 +151,14 @@ body {
 /* Container for the notes */
 #container {
     margin-left: 275px;
+    margin-top: 55px;
     background-color: white;
     position: fixed;
     border-radius: 8px;
     box-shadow: 0px 10px 15px 10px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     width: calc(100% - 250px);
-    height: 100vh;
+    height: calc(100vh - 55px);
     padding-left: 20px;
     box-sizing: border-box;
     text-align: center;
@@ -115,6 +173,15 @@ body {
     flex-wrap: wrap; /* Ensure notes flow properly if more than one */
     justify-content: flex-start; /* Align the notes to the left */
     gap: 10px; /* Space between notes */
+}
+
+#notes-list li {
+    background-color: #fdf250; /* Sticky note color */
+    margin: 10px;
+    padding: 10px;
+    list-style-type: none;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Ensure each note item takes up the appropriate space */
@@ -377,3 +444,139 @@ textarea {
     margin: 20px 0;
 }
 
+
+
+/* SIGN-IN PAGE */
+/* Login Page Styling */
+#login-container {
+    font-family: 'Lato', sans-serif;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#login-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#login-container p {
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn {
+    background-color: #6ca0dc; /* Medium-light blue */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background-color: #5a8bcf;
+}
+
+.create-account-btn {
+    display: block;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #6ca0dc;
+    text-decoration: none;
+}
+
+.create-account-btn:hover {
+    text-decoration: underline;
+}
+
+
+
+/* CREATE ACCOUNT PAGE */
+/* Account Creation Page Styling */
+#create-account-container {
+    font-family: 'Lato', sans-serif;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#create-account-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn {
+    background-color: #6ca0dc;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background-color: #5a8bcf;
+}
+
+.back-to-login {
+    display: block;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #6ca0dc;
+    text-decoration: none;
+}
+
+.back-to-login:hover {
+    text-decoration: underline;
+}

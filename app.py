@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
+
+# Secret key for session management
+app.secret_key = 'your_secret_key'
 
 # Get the DATABASE_URL environment variable and adjust for SQLAlchemy's requirements
 uri = os.getenv("DATABASE_URL")  # Heroku sets this environment variable automatically
@@ -16,6 +19,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Define models
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+
 class Notebook(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -29,11 +38,57 @@ class Note(db.Model):
 # Routes
 @app.route('/')
 def index():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
     notebooks = Notebook.query.all()
     return render_template('index.html', notebooks=notebooks or [])
 
+# Login route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email, password=password).first()
+        if user:
+            session['user_id'] = user.id
+            session['user_name'] = user.name
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid email or password')
+            return redirect(url_for('login'))
+    return render_template('login.html')
+
+# Logout route
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+# Account creation route
+@app.route('/create_account', methods=['GET', 'POST'])
+def create_account():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('An account with that email already exists.')
+            return redirect(url_for('create_account'))
+        user = User(name=name, email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
+        flash('Account created successfully! Please log in.')
+        return redirect(url_for('login'))
+    return render_template('create_account.html')
+
 @app.route('/add_notebook', methods=['POST'])
 def add_notebook():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
     name = request.form['name']
     if name:
         notebook = Notebook(name=name)
@@ -44,6 +99,9 @@ def add_notebook():
 
 @app.route('/delete_notebook/<int:id>', methods=['POST'])
 def delete_notebook(id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
     notebook = Notebook.query.get_or_404(id)
     db.session.delete(notebook)
     db.session.commit()
@@ -54,6 +112,9 @@ def delete_notebook(id):
 
 @app.route('/add_note/<int:notebook_id>', methods=['POST'])
 def add_note_to_notebook(notebook_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
     content = request.form['content']
     notebook = Notebook.query.get_or_404(notebook_id)
     if content:
@@ -64,9 +125,11 @@ def add_note_to_notebook(notebook_id):
     # After adding a note, redirect back to the notebook where the note was added
     return redirect(url_for('view_notebook', notebook_id=notebook_id))
 
-
 @app.route('/delete_note/<int:id>', methods=['POST'])
 def delete_note_from_notebook(id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
     note = Note.query.get_or_404(id)
     notebook_id = note.notebook_id  # Save the notebook ID before deleting the note
     db.session.delete(note)
@@ -78,6 +141,9 @@ def delete_note_from_notebook(id):
 
 @app.route('/edit_note/<int:id>', methods=['POST'])
 def edit_note(id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
     note = Note.query.get_or_404(id)
     new_content = request.form['content']
     if new_content:
@@ -89,10 +155,14 @@ def edit_note(id):
 
 @app.route('/notebook/<int:notebook_id>')
 def view_notebook(notebook_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
     notebook = Notebook.query.get_or_404(notebook_id)
     notebooks = Notebook.query.all()  # Get all notebooks for the sidebar
     notes = notebook.notes  # Get the notes for the selected notebook
     return render_template('index.html', notebooks=notebooks, selected_notebook=notebook, notes=notes)
 
 if __name__ == '__main__':
+    db.create_all()
     app.run(debug=True)
