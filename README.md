@@ -1,11 +1,14 @@
 
 # Andy's Sticky Notes App
 
+[Link to app via Heroku](https://andys-notes-app-7ac833b02c5c.herokuapp.com/)
+
 ## Table of Contents
 
 -   [Introduction](#introduction)
 -   [Features](#features)
 -   [Planned Features](#planned-features)
+-   [Wireframes](#wireframes)
 -   [Testing](#testing)
 -   [Bugs](#bugs)
 -   [User Stories](#user-stories)
@@ -39,6 +42,17 @@
 5. Improvements to login page e.g. confirmation message for account creation etc.
 6. New page with general info on the app and the development. Add this as a link in the Navbar
 7. Account info section - ability to change password/email/delete account
+
+## Wireframes
+
+![login-wireframe](./wireframes/login.png)
+![create-account-wireframe](./wireframes/create-account.png)
+![initial-screen-without-notes-wireframe](./wireframes/page-without-notes.png)
+![add-notebook-wireframe](./wireframes/new-notebook-screen.png)
+![add-note-wireframe](./wireframes/new-note-screen.png)
+![edit-note-wireframe](./wireframes/edit-note-screen.png)
+![page-with-notes](./wireframes/page-with-notes.png)
+
 
 ## Testing
 
@@ -74,7 +88,7 @@ Manual testing was performed throughout the development of the app to ensure tha
     - Tested same account on different devices and browsers to ensure data was correct across multiple browsers.
 
 ## Bugs
-1. Currently no known bugs, but these will be added as and when they are discovered
+1. Unable to edit a note if you press 'enter' while typing the note e.g. going to a new line
 
 ## User Stories
 
