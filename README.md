@@ -93,6 +93,18 @@ Manual testing was performed throughout the development of the app to ensure tha
 
 ![validator-results](./wireframes/python_validator.png)
 
+- All CSS code checked in [W3Schools Validator](https://jigsaw.w3.org/css-validator/validator)
+
+![css-validator-results](./wireframes/css.png)
+
+- All HTML code checked in [W3Schools HTML Validator](https://validator.w3.org/nu/). Returned some errors but these errors are necessary for the code to work
+
+![html-validator-results](./wireframes/html.png)
+
+- Lighthouse Performance Test showed great results
+
+![ligthouse-results](./wireframes/lighthouse.png)
+
 ## Bugs
 1. Unable to edit a note if you press 'enter' while typing the note e.g. going to a new line
 
