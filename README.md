@@ -10,6 +10,7 @@
 -   [Planned Features](#planned-features)
 -   [Wireframes](#wireframes)
 -   [Testing](#testing)
+-   [Validation](#validation)
 -   [Bugs](#bugs)
 -   [User Stories](#user-stories)
 -   [Technologies Used](#technologies-used)
@@ -86,6 +87,11 @@ Manual testing was performed throughout the development of the app to ensure tha
 - **Data Persistence**: Ensured that user data, notebooks, and notes are stored in the PostgreSQL database.
     - Tested by logging in with the same account after logging out to ensure the same notebooks and notes are accessible.
     - Tested same account on different devices and browsers to ensure data was correct across multiple browsers.
+
+## Validation
+- All Python code checked in a [validator](https://extendsclass.com/python-tester.html) and returns no issues
+
+![validator-results](./wireframes/python_validator.png)
 
 ## Bugs
 1. Unable to edit a note if you press 'enter' while typing the note e.g. going to a new line
